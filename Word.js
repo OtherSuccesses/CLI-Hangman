@@ -5,7 +5,8 @@ function Word(wordSelected){
 	this.letters = [],
 	this.correct = 0,
 	this.lives=6,
-	this.guessed = [] 
+	this.correctGuess,
+	this.guessed = []
 }
 
 Word.prototype.getLetters = function(){
@@ -15,8 +16,12 @@ Word.prototype.getLetters = function(){
 	} 
 }
 
-Word.prototype.displayWord = function{
+Word.prototype.displayWord = function(){
+	var displayWord = '';
 	for (var i = 0; this.letters.length; i++){
-
+		tempWord += this.letters[i].display();
 	}
+	console.log(tempWord + "\n");
 }
+
+module.exports = Word;

@@ -26,7 +26,7 @@ var game = {
 			name: 'letterGuess'
 		}]).then(function(reply){
 			if(game.alphabet.indexOf(reply.letterGuess > -1)){
-				console.log("Your letter is " + result.letterGuess);
+				console.log("Your letter is " + reply.letterGuess);
 				var numberGuessed = game.letterCheck(reply.letterGuess);
 			}
 		})
@@ -49,7 +49,8 @@ var game = {
 				}
 				else{
 					game.currentWord.lives--;
-					game.currentWord.guessed.push(letter);	
+					game.currentWord.guessed.push(letter);
+					console.log("The word does not contain that letter");	
 				}
 				console.log("Letters used: " + game.currentWord.guessed);
 				console.log("You have " + game.currentWord.lives + " tries.\n");
@@ -64,7 +65,41 @@ var game = {
 					game.currentWord.guessed.push(letter);
 				}
 			}
+			else{
+				console.log("Some kind of error")
+			}
+			game.currentWord.displayWord();
+			game.correctGuess+= numberFound;
+			game.checkWin();
 		}
+	},
+
+	"checkWin":function(){
+		if (game.currentWord.correctGuess == game.currentWord.letters.length){
+			game.wins++
+			console.log("You've won!! \nWins: " + game.wins);
+			game.gameOver();
+		}
+		else if (game.currentWord.lives == 0){
+			game.losses++
+			console.log("You've lost...\nLosses: " +game.losses);
+			game.gameOver();
+		}
+		else{
+			game.inquireStart();
+		}
+	},
+
+	"gameOver":function(){
+		inquirer.prompt([{
+			message: "Would you like to play again?",
+			type: "confirm",
+			name: "again"
+		}]).then(function(result){
+			if(result.again){
+				game.gameStart();
+			}
+		})
 	}
 }
 
